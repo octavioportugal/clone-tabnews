@@ -3,7 +3,3 @@ function Home() {
 }
 
 export default Home;
-
-function teste() {
-  console.log("identacao errada");
-}
