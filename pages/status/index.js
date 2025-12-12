@@ -12,7 +12,7 @@ export default function StatusPage() {
     <>
       <h1>Status</h1>
       <UpdatedAt />
-      <DataBaseInfo />
+      <DataBaseStatus />
     </>
   );
 }
@@ -31,15 +31,30 @@ function UpdatedAt() {
   return <div>Última atualização: {updatedAtText}</div>;
 }
 
-function DataBaseInfo() {
+function DataBaseStatus() {
   const { isLoading, data } = useSWR("/api/v1/status", fetchAPI, {
     refreshInterval: 2000,
   });
 
-  let dbInfoText = "Carregando...";
+  let dataBaseStatusInformation = "Carregando...";
 
   if (!isLoading && data) {
-    dbInfoText = JSON.stringify(data.dependencies.database, null, 2);
+    dataBaseStatusInformation = (
+      <>
+        <div>Versão: {data.dependencies.database.version}</div>
+        <div>
+          Conexões abertas: {data.dependencies.database.opened_connections}
+        </div>
+        <div>
+          Conexões máximas: {data.dependencies.database.max_connections}
+        </div>
+      </>
+    );
   }
-  return <div>Informações Base de Dados: {dbInfoText}</div>;
+  return (
+    <>
+      <d2>Database</d2>
+      <div>{dataBaseStatusInformation}</div>
+    </>
+  );
 }
